@@ -2,7 +2,9 @@ package com.example.musicshop;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -61,10 +63,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void addToCardButtonHandler(View view) {
         EditText editText = findViewById(R.id.nameEditText);
-        Order order = new Order(editText.getText().toString(),
-                                quantity,
-                                price * quantity,
-                                selectedItem);
+        Intent addToCardIntent = new Intent(MainActivity.this, OrderActivity.class);
+
+        addToCardIntent.putExtra("customerName", editText.getText().toString());
+        addToCardIntent.putExtra("quantity", quantity);
+        addToCardIntent.putExtra("price", price);
+        addToCardIntent.putExtra("total", price * quantity);
+        addToCardIntent.putExtra("itemName", selectedItem);
+        startActivity(addToCardIntent);
     }
 
     @Override
