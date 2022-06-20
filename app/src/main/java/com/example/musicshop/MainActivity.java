@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Double price = 0.0;
     private Spinner spinner;
     private ArrayAdapter arrayAdapter;
+    private String selectedItem;
     private final List<String> spinnerData = Arrays.asList("GUITAR", "DRUM", "PIANO");
     private Map<String, Double> priceMap = new HashMap<String, Double>() {{
         put("GUITAR", 1000.0);
@@ -31,7 +33,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerData);
+        arrayAdapter = new ArrayAdapter(this,
+                                        android.R.layout.simple_spinner_item,
+                                        spinnerData);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner = findViewById(R.id.spinner);
         spinner.setAdapter(arrayAdapter);
@@ -55,9 +59,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         updatePriceInTextView();
     }
 
+    public void addToCardButtonHandler(View view) {
+        EditText editText = findViewById(R.id.nameEditText);
+        Order order = new Order(editText.getText().toString(),
+                                quantity,
+                                price * quantity,
+                                selectedItem);
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String selectedItem = spinner.getSelectedItem().toString();
+        selectedItem = spinner.getSelectedItem().toString();
         price = priceMap.get(selectedItem);
         updatePriceInTextView();
     }
